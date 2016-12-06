@@ -1,6 +1,5 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var logger = require("morgan");
 var mongoose = require("mongoose");
 var request = require("request");
 var cheerio = require("cheerio");
@@ -12,6 +11,14 @@ var app = express();
 
 // Make public a static dir
 app.use(express.static("public"));
+
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({
+	defaultLayout: "main"
+}));
+
+app.set("view engine", "handlebars");
 
 mongoose.connect("mongodb://localhost/mongoScrapeProject");
 var db = mongoose.connection;
@@ -26,11 +33,11 @@ db.once("open", function() {
   console.log("Mongoose connection successful.");
 });
 
-// TODO: routes
+// ROUTES SECTION
 
 // Simple index route
 app.get("/", function(req, res) {
-  res.send(index.html);
+  res.render("index");
 });
 
 
