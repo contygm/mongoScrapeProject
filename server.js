@@ -8,11 +8,14 @@ var cheerio = require("cheerio");
 var Note = require("./models/note.js");
 var Article = require("./models/article.js");
 
+var Promise = require("bluebird");
+mongoose.Promise = Promise;
+
 // Initialize Express
 var app = express();
 
 // Make public a static dir
-app.use(express.static("public"));
+app.use(express.static(process.cwd() || __dirname + '/public'));
 
 var exphbs = require("express-handlebars");
 
@@ -40,23 +43,23 @@ db.once("open", function() {
 // TODO: A GET request to scrape google news website
 app.get("/", function(req, res) {
 
-  	request("https://news.google.com/", function(error, response, html){
+  	request("http://news.google.com/", function(error, response, html){
 		
 		// getting html data, setting it equal to $ variable
 		var $ = cheerio.load(html);
 
+		
 		// pull article blocks from news.google
-		$("div.blended-wrapper.esc-wrapper").each(function(i, element){
+		$("div.blended-wrapper").each(function(i, element){
 			
 			// empty array for saving article block info
 			var result = {};
-
-			// get schema parts
-			result.title = $(this).children("h2").children("a").attr('text');
-			result.link = $(this).children("h2").children("a").attr('href');
-			result.source = $(this.al-atribution-source).children("").attr("text");
-			result.thumbnail = $(this).children("img").attr("src");
-			result.snippet = $(this.esc-lead-snippet-wrapper).children("").attr('text');
+			// get schema parts .esc-lead-article-title-wrapper
+			result.title = $(element).find("h2").find("a").text();
+			result.link = $(element).find("h2").find("a").attr('href');
+			// result.source = $(this).children("span.al-atribution-source").text();
+			// result.thumbnail = $(this).children("img").attr("src");
+			// result.snippet = $(this).children("div.esc-lead-snippet-wrapper").attr('text');
 
 			var entry = new Article(result);
 
