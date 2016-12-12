@@ -37,32 +37,26 @@ db.once("open", function() {
 
 // ROUTES SECTION
 
-// Simple index route
-app.get("/", function(req, res) {
-  res.render("index");
-});
-
-
-
 // TODO: A GET request to scrape google news website
-app.get("/scrape", function(req, res){
-	request("https://news.google.com/", function(error, response, html){
+app.get("/", function(req, res) {
+
+  	request("https://news.google.com/", function(error, response, html){
 		
 		// getting html data, setting it equal to $ variable
 		var $ = cheerio.load(html);
 
 		// pull article blocks from news.google
-		$("blended-wrapper esc-wrapper").each(function(i, element){
+		$("div.blended-wrapper.esc-wrapper").each(function(i, element){
 			
 			// empty array for saving article block info
 			var result = {};
 
 			// get schema parts
-			result.title = $(this h2).children("a").attr('text');
-			result.link = $(this h2).children("a").attr('href');
-			result.source = $(this.al-atribution-source).attr("text");
+			result.title = $(this).children("h2").children("a").attr('text');
+			result.link = $(this).children("h2").children("a").attr('href');
+			result.source = $(this.al-atribution-source).children("").attr("text");
 			result.thumbnail = $(this).children("img").attr("src");
-			result.snippet = $(this.esc-lead-snippet-wrapper).attr('text');
+			result.snippet = $(this.esc-lead-snippet-wrapper).children("").attr('text');
 
 			var entry = new Article(result);
 
@@ -73,12 +67,14 @@ app.get("/scrape", function(req, res){
 					console.log(doc);
 				}
 			});
-
 		});	
 	});
 
-	res.render(index);
+	res.render("index");
+	console.log("scrape complete");
 });
+
+
 // TODO: This will grab an article by it's ObjectId
 // TODO: This will get the articles we scraped from the mongoDB
 // TODO: Create a new note or replace an existing note
