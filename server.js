@@ -4,7 +4,9 @@ var mongoose = require("mongoose");
 var request = require("request");
 var cheerio = require("cheerio");
 
-// TODO: link models
+// link models
+var Note = require("./models/note.js");
+var Article = require("./models/article.js");
 
 // Initialize Express
 var app = express();
@@ -42,6 +44,24 @@ app.get("/", function(req, res) {
 
 
 // TODO: Create a new note or replace an existing note
+app.get("/scrape", function(req, res){
+	request("https://news.google.com/", function(error, response, html){
+		
+		// getting html data, setting it equal to $ variable
+		var $ = cheerio.load(html);
+
+		// pull article blocks from news.google
+		$("blended-wrapper esc-wrapper").each(function(i, element){
+			
+			// empty array for saving article block info
+			var results = {};
+
+
+		})
+
+		
+	})
+})
 // TODO: This will grab an article by it's ObjectId
 // TODO: This will get the articles we scraped from the mongoDB
 // TODO: A GET request to scrape google news website
