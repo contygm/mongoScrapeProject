@@ -8,6 +8,7 @@
 
 ###Technologies Used
 * Mongoose
+* MongoDB
 * Handlebars
 * Express
 * Cheerio
@@ -19,4 +20,4 @@
 * CSS
 
 ####Developer
-Genevieve M. Conty
+Genevieve M. Conty [@contygm](https://github.com/contygm)
