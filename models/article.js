@@ -18,10 +18,10 @@ var ArticleSchema = new Schema ({
 	// 	type: String,
 	// 	required: true
 	// },
-	// snippet: {
-	// 	type: String,
-	// 	required: true
-	// },
+	snippet: {
+		type: String,
+		required: true
+	},
 	note: {
 		type: Schema.Types.ObjectId,
 		ref: "Note"

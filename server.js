@@ -40,14 +40,17 @@ db.once("open", function() {
 
 // ROUTES SECTION
 
-// TODO: A GET request to scrape google news website
 app.get("/", function(req, res) {
+	res.render("index")
+});
+
+// TODO: A GET request to scrape google news website
+app.get("/submit", function(){
 
   	request("http://news.google.com/", function(error, response, html){
-		
+	
 		// getting html data, setting it equal to $ variable
 		var $ = cheerio.load(html);
-
 		
 		// pull article blocks from news.google
 		$("table.esc-layout-table").each(function(i, element){
@@ -58,8 +61,8 @@ app.get("/", function(req, res) {
 			result.title = $(element).find("h2").find("a").text();
 			result.link = $(element).find("h2").find("a").attr('href');
 			result.source = $(element).find("table").find("span").text();
-			// result.thumbnail = $(element).find("img").attr("src");
-			// result.snippet = $(element).find("div.esc-lead-snippet-wrapper").text();
+			//result.thumbnail = $(element).find("td").find("img").attr("src");
+			result.snippet = $(element).find("tr").children("td.esc-layout-article-cell").children("div.esc-lead-snippet-wrapper").text();
 
 			var entry = new Article(result);
 
@@ -71,16 +74,15 @@ app.get("/", function(req, res) {
 				}
 			});
 		});	
+	}).then(function(){
+		res.redirect("index");
+		console.log("scrape complete1");
 	});
+})
 
-	res.render("index");
-	console.log("scrape complete");
-});
-
-
-// TODO: This will grab an article by it's ObjectId
-// TODO: This will get the articles we scraped from the mongoDB
-// TODO: Create a new note or replace an existing note
+// TODO: grab an article by it's ObjectId
+// TODO: get the articles we scraped from the mongoDB
+// TODO: Create a new note/replace existing note
 
 // Listen on port 3000
 app.listen(3000, function() {
