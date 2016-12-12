@@ -43,7 +43,8 @@ app.get("/", function(req, res) {
 });
 
 
-// TODO: Create a new note or replace an existing note
+
+// TODO: A GET request to scrape google news website
 app.get("/scrape", function(req, res){
 	request("https://news.google.com/", function(error, response, html){
 		
@@ -54,17 +55,33 @@ app.get("/scrape", function(req, res){
 		$("blended-wrapper esc-wrapper").each(function(i, element){
 			
 			// empty array for saving article block info
-			var results = {};
+			var result = {};
 
+			// get schema parts
+			result.title = $(this h2).children("a").attr('text');
+			result.link = $(this h2).children("a").attr('href');
+			result.source = $(this.al-atribution-source).attr("text");
+			result.thumbnail = $(this).children("img").attr("src");
+			result.snippet = $(this.esc-lead-snippet-wrapper).attr('text');
 
-		})
+			var entry = new Article(result);
 
-		
-	})
-})
+			entry.save(function(err, doc){
+				if(err) {
+					console.log(err);
+				} else {
+					console.log(doc);
+				}
+			});
+
+		});	
+	});
+
+	res.render(index);
+});
 // TODO: This will grab an article by it's ObjectId
 // TODO: This will get the articles we scraped from the mongoDB
-// TODO: A GET request to scrape google news website
+// TODO: Create a new note or replace an existing note
 
 // Listen on port 3000
 app.listen(3000, function() {
