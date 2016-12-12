@@ -50,16 +50,16 @@ app.get("/", function(req, res) {
 
 		
 		// pull article blocks from news.google
-		$("div.blended-wrapper").each(function(i, element){
+		$("table.esc-layout-table").each(function(i, element){
 			
 			// empty array for saving article block info
 			var result = {};
 			// get schema parts .esc-lead-article-title-wrapper
 			result.title = $(element).find("h2").find("a").text();
 			result.link = $(element).find("h2").find("a").attr('href');
-			// result.source = $(this).children("span.al-atribution-source").text();
-			// result.thumbnail = $(this).children("img").attr("src");
-			// result.snippet = $(this).children("div.esc-lead-snippet-wrapper").attr('text');
+			result.source = $(element).find("table").find("span").text();
+			// result.thumbnail = $(element).find("img").attr("src");
+			// result.snippet = $(element).find("div.esc-lead-snippet-wrapper").text();
 
 			var entry = new Article(result);
 

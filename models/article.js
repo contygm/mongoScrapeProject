@@ -10,10 +10,10 @@ var ArticleSchema = new Schema ({
 		type: String,
 		required: true
 	},
-	// source: {
-	// 	type: String,
-	// 	required: true
-	// },
+	source: {
+		type: String,
+		required: true
+	},
 	// thumbnail: {
 	// 	type: String,
 	// 	required: true
