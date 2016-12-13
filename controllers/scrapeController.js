@@ -8,7 +8,7 @@ var cheerio = require("cheerio");
 var Note = require("../models/note.js");
 var Article = require("../models/article.js")
 
-// TODO: A GET request to scrape google news website
+//GET request to scrape google news website
 router.get("/", function(req, res) {
 	request("http://news.google.com/", function(error, response, html){
 	
@@ -25,7 +25,6 @@ router.get("/", function(req, res) {
 			result.link = $(element).find("h2").find("a").attr('href');
 			result.source = $(element).find("table").find("span").eq(0).text();
 			result.thumbnail = $(element).find("td").find("img").attr("imgsrc");
-			result.snippet = $(element).find("td").next().children().attr("class");
 
 			var entry = new Article(result);
 
@@ -42,8 +41,19 @@ router.get("/", function(req, res) {
 	});
 });
 
-// TODO: grab an article by it's ObjectId
 // TODO: get the articles we scraped from the mongoDB
+router.get("/articles", function(req, res){
+	Article.find({}, function(err, doc){
+		if (err){ 
+			console.log(err);
+		} else {
+			res.json(doc);
+		}
+	});
+});
+
+// TODO: grab an article by it's ObjectId
+
 // TODO: Create a new note/replace existing note
 
 module.exports = router;
