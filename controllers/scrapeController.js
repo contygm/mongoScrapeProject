@@ -23,8 +23,6 @@ router.get("/", function(req, res) {
 			// get schema parts .esc-lead-article-title-wrapper
 			result.title = $(element).find("h2").find("a").text();
 			result.link = $(element).find("h2").find("a").attr('href');
-			result.source = $(element).find("table").find("span").eq(0).text();
-			result.thumbnail = $(element).find("td").find("img").attr("imgsrc");
 
 			var entry = new Article(result);
 
