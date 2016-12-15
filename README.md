@@ -1,7 +1,7 @@
 #Extra, Extra! Read All About It!
 ##Web Scraping Application with Google News
 
-(screenshot.jpg)
+!(/screenshot.jpg)
 
 ###Application Link
 https://desolate-cliffs-13706.herokuapp.com/
