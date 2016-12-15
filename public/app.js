@@ -19,7 +19,7 @@ $(document).on("click", "p", function(){
 	})
 		.done(function(data){
 			console.log(data);
-			$("#notes").append("<h3>" + data.title + "</h3>");
+			$("#notes").append("<h5>" + data.title + "</h5>");
 			// inputs
 			$("#notes").append("<input id='titleinput' name='title' >");
 			$("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
