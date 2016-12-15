@@ -23,7 +23,7 @@ app.engine("handlebars", exphbs({
 
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://localhost/mongooseScrapeProject");
+mongoose.connect("mongodb://heroku_p7cxs49r:l1qnpcn6m42di1iqagnkosr118@ds127428.mlab.com:27428/heroku_p7cxs49r");
 var db = mongoose.connection;
 
 // Show any mongoose errors
