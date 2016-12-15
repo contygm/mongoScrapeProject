@@ -10,6 +10,7 @@ var Article = require("../models/article.js")
 
 //GET request to scrape google news website
 router.get("/", function(req, res) {
+
 	request("http://news.google.com/", function(error, response, html){
 	
 		// getting html data, setting it equal to $ variable
@@ -19,7 +20,7 @@ router.get("/", function(req, res) {
 		$("table.esc-layout-table").each(function(i, element){
 			
 			// empty array for saving article block info
-			var result = [];
+			var result = {};
 			// get schema parts .esc-lead-article-title-wrapper
 			result.title = $(element).find("h2").find("a").text();
 			result.link = $(element).find("h2").find("a").attr('href');
@@ -43,22 +44,22 @@ router.get("/", function(req, res) {
 router.get("/articles", function(req, res){
 	Article.find({}, function(err, doc){
 		if (err){ 
-			res.send(err);
+			console.log(err);
 		} else {
-			res.send(doc);
+			res.json(doc);
 		}
 	});
 });
 
 // grab an article by it's ObjectId
 router.get("/articles/:id", function(req, res){
-	Article.findOne({"_id:": req.params.id})
+	Article.findOne({"_id":req.params.id})
 		.populate("note")
 		.exec(function(err, doc){
-			if (error){
-				res.send(err);
+			if (err){
+				console.log(err);
 			} else {
-				res.send(doc);
+				res.json(doc);
 			}
 		});
 })
@@ -76,7 +77,7 @@ router.post("/articles/:id", function(req, res){
 					if(err){
 						console.log(err);
 					} else {
-						res.send(doc);
+						res.json(doc);
 					}
 				});
 		}

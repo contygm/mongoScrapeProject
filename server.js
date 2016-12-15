@@ -11,6 +11,10 @@ var app = express();
 // Make public a static dir
 app.use(express.static(process.cwd() || __dirname + '/public'));
 
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+
 var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({
@@ -19,7 +23,7 @@ app.engine("handlebars", exphbs({
 
 app.set("view engine", "handlebars");
 
-mongoose.connect("mongodb://localhost/mongoScrapeProject");
+mongoose.connect("mongodb://localhost/mongooseScrapeProject");
 var db = mongoose.connection;
 
 // Show any mongoose errors
@@ -29,7 +33,8 @@ db.on("error", function(error) {
 
 // Once logged in to the db through mongoose, log a success message
 db.once("open", function() {
-  console.log("Mongoose connection successful.");
+ 	console.log("Mongoose connection successful.");
+ 	db.dropDatabase();
 });
 
 // ROUTES SECTION
