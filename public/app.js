@@ -5,3 +5,8 @@ $.getJSON("/articles", function(data){
 	}
 })
 
+//grab note on click
+
+//display note info
+
+//save button on note

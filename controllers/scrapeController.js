@@ -39,19 +39,49 @@ router.get("/", function(req, res) {
 	});
 });
 
-// TODO: get the articles we scraped from the mongoDB
+//get the articles we scraped from the mongoDB
 router.get("/articles", function(req, res){
 	Article.find({}, function(err, doc){
 		if (err){ 
-			console.log(err);
+			res.send(err);
 		} else {
-			res.json(doc);
+			res.send(doc);
 		}
 	});
 });
 
-// TODO: grab an article by it's ObjectId
+// grab an article by it's ObjectId
+router.get("/articles/:id", function(req, res){
+	Article.findOne({"_id:": req.params.id})
+		.populate("note")
+		.exec(function(err, doc){
+			if (error){
+				res.send(err);
+			} else {
+				res.send(doc);
+			}
+		});
+})
 
-// TODO: Create a new note/replace existing note
+
+// Create a new note/replace existing note
+router.post("/articles/:id", function(req, res){
+	var newNote = new Note(req.body);
+	newNote.save(function(err, doc){
+		if (err){
+			res.send(err)
+		} else {
+			Article.findOneAndUpdate({"_id":req.params.id}, {"note": doc._id})
+				.exec(function(err, doc){
+					if(err){
+						console.log(err);
+					} else {
+						res.send(doc);
+					}
+				});
+		}
+	});
+})
+
 
 module.exports = router;
